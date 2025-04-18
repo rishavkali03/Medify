@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Hands -->
+  <path d="M256 350C180 350 120 300 100 250C80 200 120 150 160 150C200 150 220 200 256 200C292 200 312 150 352 150C392 150 432 200 412 250C392 300 332 350 256 350Z" fill="#3B82F6"/>
+  
+  <!-- Cross -->
+  <path d="M256 100V200M206 150H306" stroke="#3B82F6" stroke-width="40" stroke-linecap="round"/>
+</svg> 
