@@ -1,0 +1,21 @@
+numpy
+scikit-learn
+
+ groq==0.22.0
+ speechrecognition==3.8.1
+ 
+# motor>=3.1.1
+ # Testing
+ httpx>=0.23.0,<1.0.0
+ fastapi==0.68.1
+ uvicorn==0.15.0
+ python-multipart==0.0.5
+ python-dotenv==0.19.0
+ pydantic>=1.9.0,<3.0.0
+aiofiles
+pyttsx3 
+ # Database
+# motor==3.1.1
+pymongo
+ requests==2.28.2
+pydub
