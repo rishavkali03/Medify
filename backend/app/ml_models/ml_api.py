@@ -58,7 +58,7 @@
 #     prediction = classifier.predict(input_scaled)
 
 #     result = "Diabetic" if prediction[0] == 1 else "Not Diabetic"
-#     return {"prediction": result}
+#     return {"prediction": result}.
 
 
 }
