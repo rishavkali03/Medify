@@ -20,6 +20,7 @@ Medify+ is an AI-driven health assistant designed to provide **early disease det
 ## 🔍 Introduction
 
 🌟 Medify+: Your Path to Complete Wellness 🌟
+
 At Medify+, we're not just building another healthcare app—we're creating a lifeline that seamlessly connects patients with quality care when they need it most. Our platform bridges critical gaps in the healthcare ecosystem, empowering users with an integrated solution for appointments, medical records, emergency services, and personalized health management—all in one elegant interface. By combining cutting-edge technology with compassionate design, we're transforming how healthcare is accessed and experienced, making quality medical care a right, not a privilege.
 
 Built for HACK4BENGAL under the theme **"Healthcare Accessibility through Technology."**
