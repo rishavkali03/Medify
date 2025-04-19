@@ -76,6 +76,7 @@ export default function QuickCheckup() {
 
   const handleFormChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    
   };
 
   const handleImageUpload = (e) => {
@@ -83,71 +84,178 @@ export default function QuickCheckup() {
     if (file) setImage(file);
   };
 
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   for (const key in formData) {
+  //     const value = formData[key];
+  //     if (isNaN(value) || value < 0) {
+  //       alert("Please enter valid, non-negative values.");
+  //       console.log(formData);
+  //       return;
+  //     }
+  //   }
+
+  //   try {
+  //     // Special handling for heart disease assessment
+  //     if (selectedDisease.id === 'heart-disease') {
+        
+        
+  //       const response = await axios.post(`${BASE_URL}/api/predict/heart`, formData)
+  //       const prediction = response.data.prediction;
+        
+  //       setResult({
+  //         heartDisease: prediction === 1 ? 'Yes' : 'No',
+  //         prediction: prediction,
+  //         ...formData
+  //       });
+  //       return;
+  //     }
+      
+  //     // Special handling for diabetes assessment - now using API endpoint
+  //     if (selectedDisease.id === 'diabetes') {
+  //       const response = await axios.post(`${BASE_URL}/api/predict/diabetes`, processedData);
+  //       const prediction = response.data.prediction;
+        
+  //       setResult({
+  //         diabetes: prediction === 1 ? 'Yes' : 'No',
+  //         prediction: prediction,
+  //         ...formData
+  //       });
+  //       return;
+  //     }
+
+  //     // For other disease types
+  //     const formDataToSend = new FormData();
+  //     if (selectedDisease.inputType === 'image') {
+  //       if (!image) return alert("Please upload an image.");
+  //       formDataToSend.append('image', image);
+  //     } else {
+  //       Object.entries(formData).forEach(([key, value]) => {
+  //         formDataToSend.append(key, value);
+  //       });
+  //     }
+
+  //     const response = await fetch(`${BASE_URL}/api/diseases/${selectedDisease.id}/predict`, {
+  //       method: 'POST',
+  //       body: formDataToSend,
+  //     });
+
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       setResult(data);
+  //     } else {
+  //       throw new Error('Prediction failed');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //     alert("Something went wrong. Please try again.");
+  //   }
+  // };
+
+  const getProcessedFormData = () => {
+    const processed = {};
+    Object.entries(formData).forEach(([key, value]) => {
+      processed[key] = shouldUseFloatInput(key)
+        ? parseFloat(value)
+        : parseInt(value, 10);
+    });
+    console.log("Processed form data:", processed);
+    return processed;
+  };
+  
+  const getPascalCaseDiabetesData = (data) => {
+    return {
+      Pregnancies: data.pregnancies,
+      Glucose: data.glucose,
+      BloodPressure: data.blood_pressure,
+      SkinThickness: data.skin_thickness,
+      Insulin: data.insulin,
+      BMI: data.bmi,
+      DiabetesPedigreeFunction: data.diabetes_pedigree_function,
+      Age: data.age,
+    };
+  };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
+    console.log("Submitting form for:", selectedDisease?.id);
+    console.log("Raw form data:", formData);
+  
     for (const key in formData) {
       const value = formData[key];
       if (isNaN(value) || value < 0) {
         alert("Please enter valid, non-negative values.");
+        console.warn("Invalid input detected:", key, value);
         return;
       }
     }
-
+  
     try {
-      // Special handling for heart disease assessment
+      const processedData = getProcessedFormData();
+  
       if (selectedDisease.id === 'heart-disease') {
-        const response = await axios.post(`${BASE_URL}/api/predict/heart`, formData)
+        console.log("Sending heart disease data to backend...");
+        const response = await axios.post(`${BASE_URL}/api/predict/heart`, processedData);
         const prediction = response.data.prediction;
-        
+        console.log("Heart disease prediction result:", prediction);
+  
         setResult({
           heartDisease: prediction === 1 ? 'Yes' : 'No',
           prediction: prediction,
-          ...formData
+          ...processedData
         });
         return;
       }
-      
-      // Special handling for diabetes assessment - now using API endpoint
+  
       if (selectedDisease.id === 'diabetes') {
-        const response = await axios.post(`${BASE_URL}/api/predict/diabetes`, formData);
+        console.log("Sending diabetes data to backend...");
+        const diabetesData = getPascalCaseDiabetesData(processedData);
+        console.log("Diabetes data being sent:", diabetesData);
+        const response = await axios.post(`${BASE_URL}/api/predict/diabetes`, diabetesData);
         const prediction = response.data.prediction;
-        
+        console.log("Diabetes prediction result:", prediction);
+  
         setResult({
           diabetes: prediction === 1 ? 'Yes' : 'No',
           prediction: prediction,
-          ...formData
+          ...diabetesData
         });
         return;
       }
-
-      // For other disease types
+  
       const formDataToSend = new FormData();
       if (selectedDisease.inputType === 'image') {
         if (!image) return alert("Please upload an image.");
+        console.log("Image file selected:", image.name);
         formDataToSend.append('image', image);
       } else {
         Object.entries(formData).forEach(([key, value]) => {
           formDataToSend.append(key, value);
         });
       }
-
+  
+      console.log("Sending form data to:", `${BASE_URL}/api/diseases/${selectedDisease.id}/predict`);
       const response = await fetch(`${BASE_URL}/api/diseases/${selectedDisease.id}/predict`, {
         method: 'POST',
         body: formDataToSend,
       });
-
+  
       if (response.ok) {
         const data = await response.json();
+        console.log("Prediction response:", data);
         setResult(data);
       } else {
         throw new Error('Prediction failed');
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error during prediction:', error);
       alert("Something went wrong. Please try again.");
     }
   };
+  
 
   const filteredDiseases = diseases.filter((disease) => {
     const matchesSearch = disease.name.toLowerCase().includes(searchQuery.toLowerCase());
