@@ -105,6 +105,8 @@ npm start
 ```
 Now, visit http://localhost:5173 to access the app.
 
+---
+
 ### 🧪 How to Use
 1. **Sign Up / Login** – Register a new account or log into an existing one.
 2. **Quick Health Checkup** – Choose a disease (e.g., Diabetes, Heart Disease) and fill out the form or upload an image.
@@ -114,11 +116,12 @@ Now, visit http://localhost:5173 to access the app.
 4. **SOS Button** – Trigger an emergency alert, sending your location to authorities.
 
 View the results and health recommendations.
-
+---
 ### 🧱 Architecture
 (image hobe akta)
-
+---
 ### 🎥 Demo Video
 Watch our demo video showcasing the features of Medify+ in action:
 
-Watch on YouTube
+Watch on Youtube
+---
