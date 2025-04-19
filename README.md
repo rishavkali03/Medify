@@ -71,10 +71,9 @@ Built for [Hackathon Name] under the theme **"Healthcare Accessibility through T
 - **Heart Disease Detection** – Using RandomForest algorithm
 
 ### 🔹 Deployment
-- **Frontend**: [click to redirect](https://medify-three-opal.vercel.app/)
-- **Backend**: [click to redirect](https://arogyamarg-hack4bengal-25.onrender.com/)
+- **Frontend**: [view🔗](https://medify-three-opal.vercel.app/)
+- **Backend**: [view🔗](https://arogyamarg-hack4bengal-25.onrender.com/)
 
----
 
 ## 🧰 Setup Instructions
 
