@@ -30,11 +30,27 @@ Built for [Hackathon Name] under the theme **"Healthcare Accessibility through T
 
 ## ✨ Features
 
-- 🧠 **AI-Powered Diagnosis** – Predicts diseases based on user input and images
-- 🎤 **Voice-enabled Chatbot** – Converses and provides suggestions using natural speech
-- 🖼️ **Image-based Skin Analysis** – Upload photos for skin condition analysis
-- 📍 **Emergency SOS** – Sends alerts to local authorities with location information
-- 🔐 **Authentication** – Secure login and protection of health data
+- 🧠 **AI-Powered Diagnosis** – Predicts diseases based on user input and images  
+- 🎤 **Voice-enabled Chatbot** – Converses and provides suggestions using natural speech  
+- 🖼️ **Image-based Analysis** – Upload photos for condition analysis in chatbot  
+- 📍 **Emergency SOS** – Sends alerts to local authorities with location information  
+- 🔐 **Authentication** – Secure login and protection of health data  
+- 🗂️ **Smart Health Records** – Automatically stores and updates user medical history for future reference  
+- 🩺 **Appointment Scheduling** – Book and manage doctor appointments directly through the app  
+- 📊 **Health Dashboards** – Visualize health trends over time with graphs and personalized insights  
+- 📍 **Nearby Hospitals & Pharmacies** – Integrated maps to locate and navigate to nearby health services  
+- 💊 **Medicine Reminders** – Notifies users when it’s time to take or refill medications  
+- 🧬 **Multi-disease Prediction** – Supports multiple disease checks like diabetes, heart conditions, skin diseases, etc.  
+- 🔁 **Real-time Chat Updates** – Keeps chatbot conversation active with real-time typing indicators and status  
+- 🧾 **Report Generation** – Downloadable PDF reports of predictions and consultations  
+- 👨‍⚕️ **Doctor/Admin Panel** – Doctors can view patient data, reports, and chat logs with role-based access  
+- 🌐 **Multilingual Support** – Chatbot and interface support multiple languages for accessibility  
+- ☁️ **Cloud Integration** – Stores user data and reports securely for access anytime, anywhere  
+- 📱 **Mobile-First Design** – Fully responsive and optimized for mobile devices   
+- 🛡️ **Role-Based Access Control (RBAC)** – Ensures different permissions for patients, doctors, and admins  
+- 💬 **Feedback System** – Users can rate chatbot answers and suggest improvements  
+- 🔄 **Auto-Sync with Wearables** – Syncs with smartwatches and fitness bands for real-time vitals  
+
 
 ---
 
