@@ -259,6 +259,18 @@ export default function QuickCheckup() {
     return '';
   };
 
+  // Check if field should use step="any" to allow float values
+  const shouldUseFloatInput = (key) => {
+    if (selectedDisease.id === 'diabetes') {
+      return key === 'bmi' || key === 'diabetes_pedigree_function';
+    }
+    // For heart disease, oldpeak should also be a float
+    if (selectedDisease.id === 'heart-disease') {
+      return key === 'oldpeak';
+    }
+    return false;
+  };
+
   return (
     <div className="container mx-auto px-4 py-8 bg-gradient-to-br from-white via-blue-150 to-blue-300 min-h-screen">
       <motion.h1
@@ -378,6 +390,7 @@ export default function QuickCheckup() {
                           <input
                             type="number"
                             name={key}
+                            step={shouldUseFloatInput(key) ? "any" : "1"}
                             onChange={handleFormChange}
                             placeholder={getPlaceholder(key)}
                             className="mt-1 block w-full rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 border-gray-300"
