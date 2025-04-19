@@ -9,7 +9,7 @@ import speech_recognition as sr
 from pydub import AudioSegment
 from fastapi import UploadFile
 
-# Load environment variables
+# Load all environment variables
 load_dotenv()
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 

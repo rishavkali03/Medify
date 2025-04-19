@@ -6,7 +6,7 @@ from brain_of_the_doctor import analyze
 recognizer = sr.Recognizer()
 tts = pyttsx3.init()
 
-# Set voice properties (optional)
+# Set voice properties (optional but do)
 voices = tts.getProperty('voices')
 tts.setProperty('voice', voices[1].id)  # Change index to try different voices
 tts.setProperty('rate', 165)  # Adjust speaking speed

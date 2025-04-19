@@ -31,7 +31,7 @@ def record_audio(file_path, timeout=20, phrase_time_limit=None):
 
 def transcribe_with_groq(stt_model, audio_filepath, GROQ_API_KEY):
     try:
-        # Ensure GROQ_API_KEY is set
+        # Ensure GROQ_API_KEY is set properly
         if not GROQ_API_KEY:
             raise ValueError("GROQ_API_KEY is not set. Please set it in your environment.")
         
