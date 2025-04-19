@@ -69,8 +69,8 @@ Built for HACK4BENGAL under the theme **"Healthcare Accessibility through Techno
 - **Heart Disease Detection** – Using RandomForest algorithm
 
 ### 🔹 Deployment
-- **Frontend**: [click to redirect](https://medify-three-opal.vercel.app/)
-- **Backend**: [click to redirect](https://arogyamarg-hack4bengal-25.onrender.com/)
+- **Frontend**: [view🔗](https://medify-three-opal.vercel.app/)
+- **Backend**: [view🔗](https://arogyamarg-hack4bengal-25.onrender.com/)
 
 ---
 
@@ -79,8 +79,8 @@ Built for HACK4BENGAL under the theme **"Healthcare Accessibility through Techno
 ### 🔗 Clone the Repo
 
 ```bash
-git clone https://github.com/yourusername/medifyplus
-cd medifyplus
+git clone https://github.com/rishovchakraborty/Medify.git
+cd medify
 ```
 ⚙️ Backend Setup
 1. Go to the backend folder:
@@ -93,27 +93,30 @@ pip install -r requirements.txt
 ```
 3. Set up environment variables.
 ```bash
-MONGO_URI=your_mongo_uri
+MONGODB_URI=your_mongo_uri
+MONGODB_DB=your_mongo_collection
 JWT_SECRET=your_jwt_secret
-OPENAI_API_KEY=your_openai_key
+GROQ_API_KEY =your_api_key
 ```
 4. Run the FastAPI server:
 ```bash
-uvicorn main:app --reload
+uvicorn app.main:app --reload
 ```
 🖥️ Frontend Setup
 Go to the frontend folder:
 
 ```bash
 cd frontend
-Install dependencies:
 ```
+Install dependencies:
+
 ```bash
 npm install
-Start the React app:
 ```
+Start the React app:
+
 ```bash
-npm start
+npm run dev
 ```
 Now, visit http://localhost:5173 to access the app.
 
