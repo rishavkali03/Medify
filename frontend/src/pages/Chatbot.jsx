@@ -188,8 +188,9 @@ const Chatbot = () => {
       <div className="flex flex-col h-full w-full max-w-5xl mx-auto p-4">
         <div className="flex flex-col flex-1 w-full rounded-3xl shadow-xl overflow-hidden bg-white">
           <div className="bg-white border-b border-gray-200 p-4 text-center">
-            <h1 className="text-2xl font-bold text-blue-600">🧠Care Bot</h1>
-            <p className="text-sm text-gray-500">Ask anything about your health & wellness</p>
+            <h1 className="text-2xl font-bold text-blue-600">🧠 VIDA ⚕️</h1>
+            
+            <p className="text-sm text-gray-500">Virtual Intelligent Medical Assistance - Ask anything about your health & wellness</p>
           </div>
 
           <div
