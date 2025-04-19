@@ -73,6 +73,9 @@ Built for HACK4BENGAL under the theme **"Healthcare Accessibility through Techno
 - **Frontend**: [view🔗](https://medify-three-opal.vercel.app/)
 - **Backend**: [view🔗](https://arogyamarg-hack4bengal-25.onrender.com/)
 
+![teck stack](./frontend/public/teck_stack.png)
+
+
 ---
 
 ## 🧰 Setup Instructions
