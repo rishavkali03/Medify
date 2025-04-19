@@ -48,9 +48,7 @@ Built for [Hackathon Name] under the theme **"Healthcare Accessibility through T
 - ☁️ **Cloud Integration** – Stores user data and reports securely for access anytime, anywhere  
 - 📱 **Mobile-First Design** – Fully responsive and optimized for mobile devices   
 - 🛡️ **Role-Based Access Control (RBAC)** – Ensures different permissions for patients, doctors, and admins  
-- 💬 **Feedback System** – Users can rate chatbot answers and suggest improvements  
-- 🔄 **Auto-Sync with Wearables** – Syncs with smartwatches and fitness bands for real-time vitals  
-
+  
 
 ---
 
