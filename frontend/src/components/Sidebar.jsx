@@ -72,7 +72,7 @@ const Sidebar = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
               <img src={logo} alt="" style={{ width: '55px', height: '40px' }}/>
             </span>
             <span className="text-white text-2xl font-extrabold tracking-tight ml-2">
-            Arogyaमार्ग
+            MEDIFY+
             </span>
           </div>
 

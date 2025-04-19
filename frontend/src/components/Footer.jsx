@@ -57,7 +57,7 @@ import {
               <h3 className="text-base font-semibold text-blue-900 mb-4 uppercase tracking-wide">Contact</h3>
               <ul className="space-y-3 text-gray-700 text-sm">
                 <li className="flex items-center gap-2">
-                  <FaEnvelope className="text-pink-500 text-sm" /> support@healthcare.com
+                  <FaEnvelope className="text-pink-500 text-sm" /> support@Medify.com
                 </li>
                 <li className="flex items-center gap-2">
                   <FaPhoneAlt className="text-blue-500 text-sm" /> +91 90070 09558
