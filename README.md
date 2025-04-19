@@ -125,19 +125,34 @@ Now, visit http://localhost:5173 to access the app.
 ---
 
 ### 🧪 How to Use
-1. **Sign Up / Login** – Register a new account or log into an existing one.
-2. **Quick Health Checkup** – Choose a disease (e.g., Diabetes, Heart Disease) and fill out the form or upload an image.
 
-3. **Chatbot** – Interact with the voice-enabled chatbot for health advice or information.
+- **Sign Up / Login** – Register a new account or log into an existing one.
 
-4. **SOS Button** – Trigger an emergency alert, sending your location to authorities.
+- **Quick Health Checkup** – Choose a disease (e.g., Diabetes, Heart Disease), then either fill out a form or upload an image for instant predictions.
 
-View the results and health recommendations.
+- **Chatbot** – Talk to the voice-enabled chatbot for health tips, guidance, or to ask questions naturally.
+
+- **SOS Button** – Tap to send an emergency alert along with your current location to nearby authorities.
+
+- **Book Appointments with E-Prescriptions** – Schedule consultations with doctors and receive digital prescriptions after checkups.
+
+- **Track Health Matrix** – View your health progress day by day with data visualizations, trends, and wellness stats.
+
+- **Personalized Suggestions** – Get daily health tips and lifestyle suggestions based on your medical history and checkup results.
+
+✅ View your health results and personalized recommendations directly in the app.
 
 ---
 
-### 🧱 Architecture
-(image hobe akta)
+### 🔧 System Flow Diagram
+
+![Medify+ Basic Flow](./frontend/public/dataflow.png)
+
+---
+
+### 🏗️ Layered Architecture
+
+![Medify+ Full Architecture](./frontend/public/dataflowr.png)
 
 ---
 ### 🎥 Demo Video
