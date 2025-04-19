@@ -80,8 +80,8 @@ Built for [Hackathon Name] under the theme **"Healthcare Accessibility through T
 ### 🔗 Clone the Repo
 
 ```bash
-git clone https://github.com/yourusername/medifyplus
-cd medifyplus
+git clone https://github.com/rishovchakraborty/Medify.git
+cd medify
 ```
 ⚙️ Backend Setup
 1. Go to the backend folder:
@@ -100,21 +100,23 @@ OPENAI_API_KEY=your_openai_key
 ```
 4. Run the FastAPI server:
 ```bash
-uvicorn main:app --reload
+uvicorn app.main:app --reload
 ```
 🖥️ Frontend Setup
 Go to the frontend folder:
 
 ```bash
 cd frontend
-Install dependencies:
 ```
+Install dependencies:
+
 ```bash
 npm install
-Start the React app:
 ```
+Start the React app:
+
 ```bash
-npm start
+npm run dev
 ```
 Now, visit http://localhost:5173 to access the app.
 
