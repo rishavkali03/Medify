@@ -61,12 +61,13 @@ Built for HACK4BENGAL under the theme **"Healthcare Accessibility through Techno
 
 ### 🔹 Backend
 - **FastAPI** – Python framework for building APIs
-- **Python ML Models** – Using libraries like scikit-learn, TensorFlow for predictions
+- **LLM** - llama 3 via groq Api
+- **Python ML Models** – pyttsx3, gtts(alternative of pyttsx3), Speech-Recognition, Using libraries like scikit-learn, TensorFlow for predictions
 - **MongoDB** – Database for storing user data
 - **JWT** – JSON Web Tokens for authentication and session management
 
 ### 🔹 Machine Learning Models
-- **Diabetes Prediction Models** – Diabetes prediction (sklearn models)
+- **Diabetes Prediction Models** – Diabetes prediction (sklearn models) using SVM Classifier
 - **Heart Disease Detection** – Using RandomForest algorithm
 
 ### 🔹 Deployment
