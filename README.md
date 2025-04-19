@@ -94,9 +94,10 @@ pip install -r requirements.txt
 ```
 3. Set up environment variables.
 ```bash
-MONGO_URI=your_mongo_uri
+MONGODB_URI=your_mongo_uri
+MONGODB_DB=your_mongo_collection
 JWT_SECRET=your_jwt_secret
-OPENAI_API_KEY=your_openai_key
+GROQ_API_KEY =your_api_key
 ```
 4. Run the FastAPI server:
 ```bash
