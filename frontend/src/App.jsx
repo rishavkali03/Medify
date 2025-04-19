@@ -43,7 +43,7 @@ function App() {
             <Navbar setIsMobileMenuOpen={setIsMobileMenuOpen} />
           )}
 
-          <main className="flex-1 overflow-x-hidden overflow-y-auto bg-white pb-20">
+          <main className="flex-1 overflow-x-hidden overflow-y-auto bg-white ">
             <Routes>
               <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
               <Route path="/register" element={<Register />} />
