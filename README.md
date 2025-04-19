@@ -74,6 +74,7 @@ Built for [Hackathon Name] under the theme **"Healthcare Accessibility through T
 - **Frontend**: [view🔗](https://medify-three-opal.vercel.app/)
 - **Backend**: [view🔗](https://arogyamarg-hack4bengal-25.onrender.com/)
 
+---
 
 ## 🧰 Setup Instructions
 
