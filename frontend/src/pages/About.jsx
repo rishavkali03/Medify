@@ -10,7 +10,7 @@ const developers = [
   
   {
     name: "Rishov Chakraborty",
-    desc: "Backend expert & database ninja.",
+    desc: " Team Lead , Backend King & database Ninja.",
     facebook: "https://facebook.com",
     instagram: "https://instagram.com",
     linkedin: "https://linkedin.com",
@@ -18,7 +18,7 @@ const developers = [
   },
   {
     name: "Rishav Kali",
-    desc: "The creative lead and UI perfectionist.",
+    desc: "The creative lead and UI perfectionist",
     facebook: "https://facebook.com",
     instagram: "https://instagram.com",
     linkedin: "https://linkedin.com",
@@ -26,7 +26,7 @@ const developers = [
   },
   {
     name: "Poulami Das",
-    desc: "Security enthusiast and deployment queen.",
+    desc: "Queen of GenAI, Machine Learning, and Seamless Deployments.",
     facebook: "https://facebook.com",
     instagram: "https://instagram.com",
     linkedin: "https://linkedin.com",
