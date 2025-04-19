@@ -1,5 +1,5 @@
 import React from "react";
-import FAQ from "../components/FAQ"; // Assuming FAQ component is imported
+import FAQ from "../components/Faq"; // Assuming FAQ component is imported
 
 export default function FAQSection() {
   return (
