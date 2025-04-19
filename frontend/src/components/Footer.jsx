@@ -88,7 +88,7 @@ import {
             </div>
           </div>
   
-          {/* Bottom Bar */}
+          {/* Bottom Bars */}
           <div className="mt-10 border-t pt-6 flex flex-col md:flex-row md:justify-between items-center text-xs text-gray-500 gap-4 text-center">
             <span className="w-full md:w-auto">
               &copy; {new Date().getFullYear()} HealthCare Platform. All rights reserved.
