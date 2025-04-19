@@ -194,7 +194,7 @@ export default function QuickCheckup() {
     blood_pressure: "70-90 mm Hg (Typical diabetic value)",
     skin_thickness: "20-40 mm (Typical diabetic value)",
     insulin: "100-300 mu U/ml (Typical diabetic value)",
-    bmi: "30-45 kg/m² (Typical diabetic value)",
+    bmi: "30-45 kg/m² (Enter decimal value)",
     diabetes_pedigree_function: "0.5-2.5 (Typical diabetic value)",
     age: "35-60+ years (Typical diabetic value)"
   };
