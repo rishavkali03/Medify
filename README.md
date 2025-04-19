@@ -67,12 +67,12 @@ Built for [Hackathon Name] under the theme **"Healthcare Accessibility through T
 - **JWT** – JSON Web Tokens for authentication and session management
 
 ### 🔹 Machine Learning Models
-- **Disease Prediction Models** – Diabetes and Heart Disease prediction (sklearn models)
-- **Skin Disease Detection** – Image-based prediction using Convolutional Neural Networks (CNN)
+- **Diabetes Prediction Models** – Diabetes prediction (sklearn models)
+- **Heart Disease Detection** – Using RandomForest algorithm
 
 ### 🔹 Deployment
-- **Frontend**: Netlify / Vercel
-- **Backend**: Render / Railway
+- **Frontend**: [click to redirect](https://medify-three-opal.vercel.app/)
+- **Backend**: [click to redirect](https://arogyamarg-hack4bengal-25.onrender.com/)
 
 ---
 
