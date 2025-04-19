@@ -61,8 +61,8 @@ Built for HACK4BENGAL under the theme **"Healthcare Accessibility through Techno
 
 ### 🔹 Backend
 - **FastAPI** – Python framework for building APIs
-- **LLM** - llama 3 via groq Api
-- **Python ML Models** – pyttsx3, gtts(alternative of pyttsx3), Speech-Recognition, Using libraries like scikit-learn, TensorFlow for predictions
+- **LLM** - llama 3(Large Language Model Meta AI 3) via groq Api
+- **Python ML & DL Models** – pyttsx3, gtts(alternative of pyttsx3), Speech-Recognition, Using libraries like scikit-learn, TensorFlow for predictions
 - **MongoDB** – Database for storing user data
 - **JWT** – JSON Web Tokens for authentication and session management
 
