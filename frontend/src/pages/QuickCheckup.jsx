@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search } from 'lucide-react';
 import axios from 'axios';
-
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 const additionalSkinDiseases = [
   'Melanoma', 'Eczema', 'Psoriasis', 'Acne', 'Rosacea', 'Vitiligo', 'Warts',
   'Basal Cell Carcinoma', 'Squamous Cell Carcinoma', 'Lupus', 'Contact Dermatitis',
@@ -97,7 +97,7 @@ export default function QuickCheckup() {
     try {
       // Special handling for heart disease assessment
       if (selectedDisease.id === 'heart-disease') {
-        const response = await axios.post("http://localhost:8000/api/predict/heart", formData);
+        const response = await axios.post(`${BASE_URL}/api/predict/heart`, formData)
         const prediction = response.data.prediction;
         
         setResult({
@@ -110,7 +110,7 @@ export default function QuickCheckup() {
       
       // Special handling for diabetes assessment - now using API endpoint
       if (selectedDisease.id === 'diabetes') {
-        const response = await axios.post("http://localhost:8000/api/predict/diabetes", formData);
+        const response = await axios.post(`${BASE_URL}/api/predict/diabetes`, formData);
         const prediction = response.data.prediction;
         
         setResult({
@@ -132,7 +132,7 @@ export default function QuickCheckup() {
         });
       }
 
-      const response = await fetch(`http://localhost:8000/api/diseases/${selectedDisease.id}/predict`, {
+      const response = await fetch(`${BASE_URL}/api/diseases/${selectedDisease.id}/predict`, {
         method: 'POST',
         body: formDataToSend,
       });

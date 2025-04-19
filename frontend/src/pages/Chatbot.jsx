@@ -10,7 +10,8 @@ import {
 } from '@heroicons/react/24/outline';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const API_URL = 'http://localhost:8000';
+const API_URL = import.meta.env.VITE_BACKEND_URL;
+
 
 const Chatbot = () => {
   const [inputMessage, setInputMessage] = useState('');

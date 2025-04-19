@@ -6,7 +6,7 @@ import SearchFilters from '../components/SearchFilters';
 import VoiceCommand from '../components/VoiceCommand';
 import EmergencyIcon from '../components/EmergencyIcon';
 import EmergencyMap from '../components/EmergencyMap';
-
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 // Mock facility data with coordinates for major Indian cities
 const mockFacilities = [
   {
@@ -94,7 +94,7 @@ const Emergency = () => {
         
         // Try to fetch from API first
         try {
-          const response = await fetch('http://localhost:8000/api/facilities');
+          const response = await fetch(`${BASE_URL}/api/facilities`);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }

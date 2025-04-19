@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 export default function Login({ setIsAuthenticated }) {
   const [formData, setFormData] = useState({
     email: '',
@@ -20,7 +20,7 @@ export default function Login({ setIsAuthenticated }) {
     e.preventDefault();
     try {
       // TODO: Replace with actual API call
-      const response = await fetch('http://localhost:8000/api/auth/login', {
+      const response = await fetch(`${BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
