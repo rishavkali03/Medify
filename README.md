@@ -116,12 +116,16 @@ Now, visit http://localhost:5173 to access the app.
 4. **SOS Button** – Trigger an emergency alert, sending your location to authorities.
 
 View the results and health recommendations.
+
 ---
+
 ### 🧱 Architecture
 (image hobe akta)
+
 ---
 ### 🎥 Demo Video
 Watch our demo video showcasing the features of Medify+ in action:
 
 Watch on Youtube
+
 ---
