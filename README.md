@@ -162,6 +162,7 @@ Now, visit http://localhost:5173 to access the app.
 
 ![Medify+ Full Architecture](./frontend/public/dataflowr.png)
 
+
 ## 🙏 Conclusion
 
 Medify+ is more than just a healthcare app—it's a vision for inclusive, accessible, and connected care.  
@@ -169,7 +170,7 @@ Medify+ is more than just a healthcare app—it's a vision for inclusive, access
 We built this with passion, precision, and purpose to address real-world healthcare challenges.  
 
 **Thank you for reviewing our project.**  
-— Team Medify+
+— Team MED MORPHOSIS
 
 ---
 
