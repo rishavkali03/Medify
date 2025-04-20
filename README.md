@@ -78,8 +78,6 @@ Built for HACK4BENGAL under the theme **"Healthcare Accessibility through Techno
 
 
 ---
-
----
 ### 🎥 YOUTUBE LINK FOR THE DEMO VIDEO : 
 **Link** : https://youtu.be/9JqGdLz--ow?si=609nQqNvAHzN40dR
 ---
