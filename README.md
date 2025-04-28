@@ -162,9 +162,11 @@ Now, visit http://localhost:5173 to access the app.
 
 ### 👥 Team Contributions
 
-Name	                Role
-RISHAV KALI         :	Frontend Development (React, TailwindCSS, UI/UX Integration)
+Name	              
+RISHAV KALI         :	Frontend Development (React, Tailwind CSS, UI/UX Integration)
+
 RISHOV CHAKRABORTY  :	Backend Development (FastAPI, LLM Integration, Database, Authentication)
+
 POULAMI DAS         :	Machine Learning Models (Disease Prediction Models, Training, Deployment)
 
 
