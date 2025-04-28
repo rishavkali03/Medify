@@ -160,6 +160,13 @@ Now, visit http://localhost:5173 to access the app.
 
 ![Medify+ Full Architecture](./frontend/public/dataflowr.png)
 
+### 👥 Team Contributions
+
+Name	                Role
+RISHAV KALI         :	Frontend Development (React, TailwindCSS, UI/UX Integration)
+RISHOV CHAKRABORTY  :	Backend Development (FastAPI, LLM Integration, Database, Authentication)
+POULAMI DAS         :	Machine Learning Models (Disease Prediction Models, Training, Deployment)
+
 
 ## 🙏 Conclusion
 
