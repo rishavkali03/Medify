@@ -1,10 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import Navbar from './components/Navbar';
 // import Footer from './components/Footer';
-import Login from './pages/Login';
-import Register from './components/Register'; // Updated import path to components directory
+import Register from './components/Register';
 import Home from './pages/Home';
 import Chatbot from './pages/Chatbot';
 import Emergency from './pages/Emergency';
@@ -16,15 +15,30 @@ import Profile from './pages/Profile';
 import Contact from './pages/Contact';
 import AdminLoginPg from './pages/AdminLoginPg';
 import About from './pages/About';
-import Signin from './pages/Signin'; // ✅ NEWLY ADDED
+import Signin from './pages/Signin';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(true); // Set to false in production
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    const username = localStorage.getItem('username');
+    setIsAuthenticated(!!token && !!username);
+  }, []);
+
+  const handleAuthSuccess = (token, username) => {
+    localStorage.setItem('access_token', token);
+    localStorage.setItem('username', username);
+    setIsAuthenticated(true);
+  };
+
+  // ProtectedRoute checks for both access_token and username in localStorage
   const ProtectedRoute = ({ children }) => {
-    if (!isAuthenticated) {
-      return <Navigate to="/login" />;
+    const token = localStorage.getItem('access_token');
+    const username = localStorage.getItem('username');
+    if (!token || !username) {
+      return <Navigate to="/signin" />;
     }
     return children;
   };
@@ -32,28 +46,17 @@ function App() {
   return (
     <Router>
       <div className="flex h-screen bg-white">
-        {isAuthenticated && (
-          <Sidebar
-            isMobileMenuOpen={isMobileMenuOpen}
-            setIsMobileMenuOpen={setIsMobileMenuOpen}
-          />
-        )}
+        <Sidebar
+          isMobileMenuOpen={isMobileMenuOpen}
+          setIsMobileMenuOpen={setIsMobileMenuOpen}
+        />
         <div className="flex-1 flex flex-col overflow-hidden">
-          {isAuthenticated && (
-            <Navbar setIsMobileMenuOpen={setIsMobileMenuOpen} />
-          )}
-
+          <Navbar setIsMobileMenuOpen={setIsMobileMenuOpen} />
           <main className="flex-1 overflow-x-hidden overflow-y-auto bg-white ">
             <Routes>
-              <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/signin" element={<Signin />} /> {/* ✅ NEW ROUTE */}
-
-              <Route path="/" element={
-                <ProtectedRoute>
-                  <Home />
-                </ProtectedRoute>
-              } />
+              <Route path="/" element={<Home />} />
+              <Route path="/register" element={<Register onAuthSuccess={handleAuthSuccess} />} />
+              <Route path="/signin" element={<Signin setIsAuthenticated={setIsAuthenticated} onAuthSuccess={handleAuthSuccess} />} />
               <Route path="/chatbot" element={
                 <ProtectedRoute>
                   <Chatbot />
@@ -89,7 +92,11 @@ function App() {
                   <Profile />
                 </ProtectedRoute>
               } />
-              <Route path="/contact" element={<Contact />} />
+              <Route path="/contact" element={
+                <ProtectedRoute>
+                  <Contact />
+                </ProtectedRoute>
+              } />
               <Route path="/admin-login" element={<AdminLoginPg />} />
               <Route path="/about" element={
                 <ProtectedRoute>

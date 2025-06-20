@@ -19,3 +19,5 @@ pyttsx3
 pymongo
  requests==2.28.2
 pydub
+pyjwt
+passlib[bcrypt]

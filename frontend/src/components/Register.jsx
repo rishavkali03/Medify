@@ -2,13 +2,10 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
-const Register = () => {
+const Register = ({ onAuthSuccess }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
     email: '',
-    phoneNumber: '',
     password: '',
     confirmPassword: '',
     agreeToTerms: true
@@ -17,6 +14,7 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -29,13 +27,36 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    await new Promise(resolve => setTimeout(resolve, 800));
-
-    localStorage.setItem('isAuthenticated', 'true');
-    localStorage.setItem('userName', formData.firstName || 'User');
-
-    navigate('/');
+    setError('');
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match.');
+      setIsSubmitting(false);
+      return;
+    }
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL_DEV}/api/users/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
+        }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('access_token', data.access_token);
+        localStorage.setItem('username', data.username || formData.email);
+        if (onAuthSuccess) onAuthSuccess(data.access_token, data.username || formData.email);
+        navigate('/chatbot'); // Redirect to a protected page
+      } else {
+        const errorData = await response.json().catch(() => ({}));
+        setError(errorData.detail || 'Registration failed. Please try again.');
+      }
+    } catch (err) {
+      setError('An error occurred. Please try again.');
+    }
     setIsSubmitting(false);
   };
 
@@ -53,20 +74,16 @@ const Register = () => {
             </p>
           </div>
 
+          {error && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+              {error}
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-              <InputField label="First Name" name="firstName" value={formData.firstName} onChange={handleChange} placeholder="John" />
-              <InputField label="Last Name" name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Doe" />
-            </div>
-
             <InputField label="Email Address" name="email" type="email" value={formData.email} onChange={handleChange} placeholder="john.doe@example.com" />
-            <InputField label="Phone Number (optional)" name="phoneNumber" type="tel" value={formData.phoneNumber} onChange={handleChange} placeholder="(123) 456-7890" />
-
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-              <PasswordField label="Password" name="password" value={formData.password} onChange={handleChange} show={showPassword} setShow={setShowPassword} />
-              <PasswordField label="Confirm Password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} show={showConfirmPassword} setShow={setShowConfirmPassword} />
-            </div>
-
+            <PasswordField label="Password" name="password" value={formData.password} onChange={handleChange} show={showPassword} setShow={setShowPassword} />
+            <PasswordField label="Confirm Password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} show={showConfirmPassword} setShow={setShowConfirmPassword} />
             <div className="flex items-start space-x-2">
               <input
                 id="agreeToTerms"
@@ -82,7 +99,6 @@ const Register = () => {
                 <Link to="/privacy" className="text-blue-600 underline hover:text-blue-500">Privacy Policy</Link>
               </label>
             </div>
-
             <button
               type="submit"
               className="w-full py-3 px-4 text-sm font-semibold rounded-lg text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-lg hover:shadow-xl transition-all"

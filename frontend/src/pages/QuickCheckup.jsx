@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search } from 'lucide-react';
 import axios from 'axios';
-const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+const BASE_URL = import.meta.env.VITE_BACKEND_URL_DEV;
 const additionalSkinDiseases = [
   'Melanoma', 'Eczema', 'Psoriasis', 'Acne', 'Rosacea', 'Vitiligo', 'Warts',
   'Basal Cell Carcinoma', 'Squamous Cell Carcinoma', 'Lupus', 'Contact Dermatitis',

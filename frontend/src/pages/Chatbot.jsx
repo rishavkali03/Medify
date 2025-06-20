@@ -10,7 +10,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const API_URL = import.meta.env.VITE_BACKEND_URL;
+const API_URL = import.meta.env.VITE_BACKEND_URL_DEV;
 
 const Chatbot = () => {
   const [inputMessage, setInputMessage] = useState('');
