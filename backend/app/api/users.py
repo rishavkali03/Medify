@@ -75,6 +75,11 @@ def login(request: LoginRequest):
         email = request.email
         password = request.password
         user = db.users.find_one({"email": email})
+        print("User from DB:", user)
+        print("Password from form:", password)
+        if user:
+            print("Password in DB:", user["password"])
+            print("Password match:", verify_password(password, user["password"]))
         if not user or not verify_password(password, user["password"]):
             raise HTTPException(status_code=401, detail="Invalid credentials")
         access_token = create_access_token({"sub": str(user["_id"])})
