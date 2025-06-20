@@ -82,7 +82,7 @@ export default function Contact() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
       >
-        <p>&copy; {new Date().getFullYear()}  Arogyaमार्ग. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()}  Medify+ All rights reserved.</p>
         <div className="flex justify-center space-x-6 mt-4">
           <a href="#" className="hover:text-blue-300 transition" aria-label="Privacy Policy">Privacy Policy</a>
           <a href="#" className="hover:text-blue-300 transition" aria-label="Terms of Service">Terms of Service</a>
