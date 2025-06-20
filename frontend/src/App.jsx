@@ -62,11 +62,7 @@ function App() {
                   <Chatbot />
                 </ProtectedRoute>
               } />
-              <Route path="/emergency" element={
-                <ProtectedRoute>
-                  <Emergency />
-                </ProtectedRoute>
-              } />
+              <Route path="/emergency" element={<Emergency />} />
               <Route path="/quick-checkup" element={
                 <ProtectedRoute>
                   <QuickCheckup />
