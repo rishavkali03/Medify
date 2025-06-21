@@ -54,6 +54,23 @@ const editDistance = (s1, s2) => {
   return costs[s2.length];
 };
 
+const commandAliases = {
+  // Navigation
+  '/chatbot': ['chatbot', 'chat bot', 'open chatbot', 'go to chatbot'],
+  '/': ['home', 'go home', 'go to home', 'main page', 'dashboard'],
+  '/quick-checkup': ['quick checkup', 'check up', 'checkup', 'go to quick checkup', 'disease prediction'],
+  '/appointments': ['appointments', 'my appointments', 'show appointments', 'go to appointments'],
+  '/health-metrics': ['health metrics', 'metrics', 'my health', 'go to health metrics'],
+  '/emergency': ['emergency', 'emergency page', 'go to emergency', 'help'],
+  '/profile': ['profile', 'my profile', 'user profile', 'go to profile'],
+
+  // Chat Actions
+  'action:send_message': ['send message', 'send', 'send it'],
+  'action:clear_chat': ['clear chat', 'reset chat', 'new chat'],
+
+  // Auth Actions
+  'action:sign_out': ['sign out', 'log out', 'logout'],
+};
 
 const VoiceCommand = () => {
   const [isEnabled, setIsEnabled] = useState(false);
@@ -80,38 +97,51 @@ const VoiceCommand = () => {
     setCommands(prev => [...prev, { text: cleanedText, timestamp: new Date() }]);
 
     let response = '';
-
-    const navigationTargets = {
-        'chatbot': '/chatbot',
-        'home': '/',
-        'quick checkup': '/quick-checkup',
-        'appointments': '/appointments',
-        'health metrics': '/health-metrics',
-        'emergency': '/emergency',
-    };
-
     let bestMatch = null;
     let highestSimilarity = 0;
 
-    if (cleanedText.includes('go to')) {
-        const targetPhrase = cleanedText.split('go to')[1].trim();
-        for (const target in navigationTargets) {
-            const sim = similarity(targetPhrase, target);
-            if (sim > highestSimilarity) {
-                highestSimilarity = sim;
-                bestMatch = target;
-            }
+    for (const action in commandAliases) {
+      const aliases = commandAliases[action];
+      for (const alias of aliases) {
+        // Using `includes` for partial matches, e.g., "go to chatbot please"
+        if (cleanedText.includes(alias)) {
+          const sim = similarity(cleanedText, alias);
+          if (sim > highestSimilarity) {
+            highestSimilarity = sim;
+            bestMatch = action;
+          }
         }
+      }
+    }
 
-        if (bestMatch && highestSimilarity > 0.6) { // Threshold for matching
-            navigate(navigationTargets[bestMatch]);
-            response = `Navigating to ${bestMatch}.`;
-        } else {
-            response = "Sorry, I can't navigate to that page.";
+    if (bestMatch && highestSimilarity > 0.5) { // Confidence threshold
+      if (bestMatch.startsWith('/')) {
+        navigate(bestMatch);
+        const pageName = bestMatch.replace('/', '') || 'home';
+        response = `Navigating to ${pageName}.`;
+      } else if (bestMatch.startsWith('action:')) {
+        const actionName = bestMatch.split(':')[1];
+        
+        switch (actionName) {
+          case 'send_message':
+          case 'clear_chat': {
+            const event = new CustomEvent('voice-command-chat', { detail: { action: actionName, text: cleanedText } });
+            window.dispatchEvent(event);
+            response = `Action acknowledged: ${actionName.replace('_', ' ')}.`;
+            break;
+          }
+          case 'sign_out':
+            // Assuming sign out is handled in Sidebar or a context
+            // A bit of a hack, but effective for a global action
+            document.getElementById('sign-out-button')?.click();
+            response = 'Signing you out.';
+            break;
+          default:
+            response = "I understood the action but don't know how to perform it.";
         }
-
+      }
     } else if (cleanedText.includes('send') || cleanedText.startsWith('i have')) {
-        const event = new CustomEvent('voice-command-chat', { detail: cleanedText });
+        const event = new CustomEvent('voice-command-chat', { detail: { action: 'send_text', text: cleanedText } });
         window.dispatchEvent(event);
         response = `Sending "${cleanedText}" to the chatbot.`;
     } else {

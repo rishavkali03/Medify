@@ -42,18 +42,26 @@ const Chatbot = () => {
   // Listen for voice commands from the global VoiceCommand component
   useEffect(() => {
     const handleVoiceCommand = (event) => {
-      const command = event.detail;
-      if (command) {
-        // Update the input field with the voice command text
-        setInputMessage(command);
-        
-        // Use a timeout to allow the state to update before submitting
+      const { action, text } = event.detail;
+
+      if (action === 'clear_chat') {
+        setMessages([{
+          sender: 'bot',
+          text: "👋 Hi there! I'm your health assistant. Ask me anything—from symptoms to wellness tips!",
+          timestamp: new Date(),
+        }]);
+        setVoiceFeedback('Chat cleared via voice command!');
+        setTimeout(() => setVoiceFeedback(''), 3000);
+        return;
+      }
+
+      if (text) {
+        setInputMessage(text);
         setTimeout(() => {
-            // Programmatically submit the form
-            const form = document.getElementById('chatbot-form');
-            if (form) {
-                form.requestSubmit();
-            }
+          const form = document.getElementById('chatbot-form');
+          if (form) {
+            form.requestSubmit();
+          }
         }, 100);
       }
     };
