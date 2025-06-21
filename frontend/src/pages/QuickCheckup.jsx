@@ -287,7 +287,7 @@ const QuickCheckup = () => {
                   className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">Fasting Blood Sugar</option>
-                  <option value="1">> 120 mg/dl</option>
+                  <option value="1">{'>'} 120 mg/dl</option>
                   <option value="0">≤ 120 mg/dl</option>
                 </select>
                 <select

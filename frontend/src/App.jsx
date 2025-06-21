@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import Navbar from './components/Navbar';
+import VoiceCommand from './components/VoiceCommand';
 // import Footer from './components/Footer';
 import Register from './components/Register';
 import Home from './pages/Home';
@@ -103,6 +104,9 @@ function App() {
             </Routes>
           </main>
         </div>
+        
+        {/* Global Voice Command Component */}
+        <VoiceCommand />
       </div>
     </Router>
   );
