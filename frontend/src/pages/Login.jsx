@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-const BASE_URL = import.meta.env.VITE_BACKEND_URL_DEV;
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 export default function Login({ setIsAuthenticated, onAuthSuccess }) {
   const [formData, setFormData] = useState({
     email: '',

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { FaGoogle, FaFacebookF, FaGithub } from 'react-icons/fa';
 
-const BASE_URL = import.meta.env.VITE_BACKEND_URL_DEV;
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Signin = ({ setIsAuthenticated, onAuthSuccess }) => {
   const navigate = useNavigate();
