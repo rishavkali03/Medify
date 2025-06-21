@@ -155,6 +155,7 @@ const Sidebar = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
                   </div>
                 </Link>
                 <button
+                  id="sign-out-button"
                   onClick={handleSignOut}
                   className="flex items-center w-full px-4 py-2 text-sm font-medium text-white/90 hover:bg-white/10 rounded-lg transition-colors"
                 >
