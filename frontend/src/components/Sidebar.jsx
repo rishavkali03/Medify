@@ -60,8 +60,8 @@ const Sidebar = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
   };
 
   const handleSignOut = () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userData');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('username');
     setIsAuthenticated(false);
     setUser(null);
     navigate('/');

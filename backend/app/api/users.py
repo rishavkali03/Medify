@@ -5,6 +5,7 @@ from pymongo import MongoClient
 from bson import ObjectId
 import os
 from app.core.auth import hash_password, verify_password, create_access_token, decode_access_token
+from app.schemas.user import UserCreate
 
 router = APIRouter()
 
@@ -34,26 +35,27 @@ class LoginRequest(BaseModel):
 
 # User endpoints
 @router.post("/register")
-def register(user: UserBase):
-    try:
-        # Use email as username
-        existing_user = db.users.find_one({"email": user.email})
-        if existing_user:
-            raise HTTPException(status_code=400, detail="Email already exists")
-        user_dict = user.dict()
-        user_dict["username"] = user.email  # Store email as username
-        user_dict["password"] = hash_password(user_dict["password"])
-        result = db.users.insert_one(user_dict)
-        access_token = create_access_token({"sub": str(result.inserted_id)})
-        return {
-            "message": "User registered successfully",
-            "user_id": str(result.inserted_id),
-            "username": user.email,
-            "email": user.email,
-            "access_token": access_token
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+def register(user: UserCreate):
+    # Check if email or username already exists
+    if db.users.find_one({"email": user.email}):
+        raise HTTPException(status_code=400, detail="Email already registered")
+    if db.users.find_one({"username": user.username}):
+        raise HTTPException(status_code=400, detail="Username already taken")
+
+    user_dict = user.dict()
+    user_dict["password"] = hash_password(user_dict["password"])
+    
+    result = db.users.insert_one(user_dict)
+    
+    # Create token with user ID and username
+    access_token = create_access_token(data={"sub": str(result.inserted_id), "username": user.username})
+
+    return {
+        "message": "User registered successfully",
+        "user_id": str(result.inserted_id),
+        "username": user.username,
+        "access_token": access_token,
+    }
 
 @router.get("/verify-email")
 def verify_email(token: str = Query(...)):
@@ -71,27 +73,19 @@ def verify_email(token: str = Query(...)):
 
 @router.post("/login")
 def login(request: LoginRequest):
-    try:
-        email = request.email
-        password = request.password
-        user = db.users.find_one({"email": email})
-        print("User from DB:", user)
-        print("Password from form:", password)
-        if user:
-            print("Password in DB:", user["password"])
-            print("Password match:", verify_password(password, user["password"]))
-        if not user or not verify_password(password, user["password"]):
-            raise HTTPException(status_code=401, detail="Invalid credentials")
-        access_token = create_access_token({"sub": str(user["_id"])})
-        return {
-            "message": "Login successful",
-            "user_id": str(user["_id"]),
-            "username": user["email"],
-            "email": user["email"],
-            "access_token": access_token
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    user = db.users.find_one({"email": request.email})
+    if not user or not verify_password(request.password, user.get("password")):
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+        
+    # Create token with user ID and username
+    access_token = create_access_token(data={"sub": str(user["_id"]), "username": user["username"]})
+
+    return {
+        "message": "Login successful",
+        "access_token": access_token,
+        "user_id": str(user["_id"]),
+        "username": user["username"],
+    }
 
 def get_current_user(Authorization: str = Header(...)):
     if not Authorization.startswith("Bearer "):

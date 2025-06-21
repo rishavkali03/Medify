@@ -74,6 +74,31 @@ const Chatbot = () => {
   }, []); // Empty dependency array ensures this runs only once
 
   useEffect(() => {
+    const handleVoiceAudioCommand = (event) => {
+      const { action } = event.detail;
+      if (action === 'play_last_message') {
+        const lastBotMessageWithAudio = [...messages]
+          .reverse()
+          .find(msg => msg.sender === 'bot' && msg.audio && msg.audio.url);
+
+        if (lastBotMessageWithAudio) {
+          playAudio(lastBotMessageWithAudio.audio.url);
+          setVoiceFeedback('Playing the last audio message.');
+        } else {
+          setVoiceFeedback('No audio message found to play.');
+        }
+        setTimeout(() => setVoiceFeedback(''), 3000);
+      }
+    };
+
+    window.addEventListener('voice-command-audio', handleVoiceAudioCommand);
+
+    return () => {
+      window.removeEventListener('voice-command-audio', handleVoiceAudioCommand);
+    };
+  }, [messages]); // Dependency on messages is important here
+
+  useEffect(() => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
     }

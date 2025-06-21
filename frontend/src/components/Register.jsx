@@ -5,6 +5,7 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 const Register = ({ onAuthSuccess }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
+    username: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -40,6 +41,7 @@ const Register = ({ onAuthSuccess }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          username: formData.username,
           email: formData.email,
           password: formData.password
         }),
@@ -81,6 +83,7 @@ const Register = ({ onAuthSuccess }) => {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
+            <InputField label="Username" name="username" type="text" value={formData.username} onChange={handleChange} placeholder="your_unique_username" />
             <InputField label="Email Address" name="email" type="email" value={formData.email} onChange={handleChange} placeholder="john.doe@example.com" />
             <PasswordField label="Password" name="password" value={formData.password} onChange={handleChange} show={showPassword} setShow={setShowPassword} />
             <PasswordField label="Confirm Password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} show={showConfirmPassword} setShow={setShowConfirmPassword} />
@@ -155,6 +158,7 @@ const InputField = ({ label, name, type = 'text', value, onChange, placeholder }
       value={value}
       onChange={onChange}
       placeholder={placeholder}
+      required
       className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all sm:text-sm"
     />
   </div>

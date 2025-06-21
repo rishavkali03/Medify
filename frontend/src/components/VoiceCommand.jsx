@@ -67,9 +67,13 @@ const commandAliases = {
   // Chat Actions
   'action:send_message': ['send message', 'send', 'send it'],
   'action:clear_chat': ['clear chat', 'reset chat', 'new chat'],
+  'action:play_last_message': ['play message', 'play the message', 'play response', 'read it to me', 'play audio'],
 
   // Auth Actions
   'action:sign_out': ['sign out', 'log out', 'logout'],
+
+  // Meta Actions
+  'action:stop_listening': ['stop listening', 'stop', 'cancel', 'turn off'],
 };
 
 const VoiceCommand = () => {
@@ -84,8 +88,20 @@ const VoiceCommand = () => {
   const navigate = useNavigate();
   const recognitionRef = useRef(null);
 
+  const stopListening = useCallback(() => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+    }
+    setIsListening(false);
+  }, []);
+
   const toggleVoiceControl = () => {
-    setIsEnabled(prev => !prev);
+    setIsEnabled(prev => {
+      if (prev) { // If turning off
+        stopListening();
+      }
+      return !prev;
+    });
   };
 
   const toggleSpeech = () => {
@@ -94,33 +110,57 @@ const VoiceCommand = () => {
   
   const processCommand = useCallback((text) => {
     const cleanedText = text.toLowerCase().trim();
+    if (!cleanedText) return;
+
     setCommands(prev => [...prev, { text: cleanedText, timestamp: new Date() }]);
 
     let response = '';
-    let bestMatch = null;
+    let matchedAction = null;
     let highestSimilarity = 0;
 
+    // 1. First, check for high-confidence direct inclusion.
+    // This handles cases like "please go to chatbot" correctly.
+    let bestDirectMatch = null;
+    let longestAliasLength = 0;
     for (const action in commandAliases) {
-      const aliases = commandAliases[action];
-      for (const alias of aliases) {
-        // Using `includes` for partial matches, e.g., "go to chatbot please"
-        if (cleanedText.includes(alias)) {
-          const sim = similarity(cleanedText, alias);
-          if (sim > highestSimilarity) {
-            highestSimilarity = sim;
-            bestMatch = action;
-          }
+        for (const alias of commandAliases[action]) {
+            if (cleanedText.includes(alias)) {
+                // Prefer the longest matching alias to avoid "go" matching "go to home"
+                if (alias.length > longestAliasLength) {
+                    longestAliasLength = alias.length;
+                    bestDirectMatch = action;
+                }
+            }
         }
-      }
     }
 
-    if (bestMatch && highestSimilarity > 0.5) { // Confidence threshold
-      if (bestMatch.startsWith('/')) {
-        navigate(bestMatch);
-        const pageName = bestMatch.replace('/', '') || 'home';
+    if (bestDirectMatch) {
+        matchedAction = bestDirectMatch;
+    } else {
+        // 2. If no direct match, use fuzzy matching on the whole phrase.
+        // This handles misspellings like "go to chat boat".
+        for (const action in commandAliases) {
+            for (const alias of commandAliases[action]) {
+                const sim = similarity(cleanedText, alias);
+                if (sim > highestSimilarity) {
+                    highestSimilarity = sim;
+                    matchedAction = action;
+                }
+            }
+        }
+        // If similarity is too low, it's not a command.
+        if (highestSimilarity < 0.6) {
+             matchedAction = null;
+        }
+    }
+
+    if (matchedAction) {
+      if (matchedAction.startsWith('/')) {
+        navigate(matchedAction);
+        const pageName = matchedAction.replace('/', '') || 'home';
         response = `Navigating to ${pageName}.`;
-      } else if (bestMatch.startsWith('action:')) {
-        const actionName = bestMatch.split(':')[1];
+      } else if (matchedAction.startsWith('action:')) {
+        const actionName = matchedAction.split(':')[1];
         
         switch (actionName) {
           case 'send_message':
@@ -130,58 +170,81 @@ const VoiceCommand = () => {
             response = `Action acknowledged: ${actionName.replace('_', ' ')}.`;
             break;
           }
+          case 'play_last_message': {
+            const event = new CustomEvent('voice-command-audio', { detail: { action: 'play_last_message' } });
+            window.dispatchEvent(event);
+            response = 'Playing last message.';
+            break;
+          }
+          case 'stop_listening':
+            stopListening();
+            response = 'Turning off voice recognition.';
+            break;
           case 'sign_out':
-            // Assuming sign out is handled in Sidebar or a context
-            // A bit of a hack, but effective for a global action
             document.getElementById('sign-out-button')?.click();
             response = 'Signing you out.';
             break;
           default:
-            response = "I understood the action but don't know how to perform it.";
+            // This case should not be reached if commandAliases is correct, but as a fallback:
+            const event = new CustomEvent('voice-command-chat', { detail: { action: 'send_text', text: cleanedText } });
+            window.dispatchEvent(event);
+            response = `Sending "${cleanedText}" to the chatbot.`;
         }
       }
-    } else if (cleanedText.includes('send') || cleanedText.startsWith('i have')) {
-        const event = new CustomEvent('voice-command-chat', { detail: { action: 'send_text', text: cleanedText } });
-        window.dispatchEvent(event);
-        response = `Sending "${cleanedText}" to the chatbot.`;
     } else {
-      response = "Sorry, I didn't understand that command.";
+      // If no command matched at all, assume it's for the chatbot.
+      const event = new CustomEvent('voice-command-chat', { detail: { action: 'send_text', text: cleanedText } });
+      window.dispatchEvent(event);
+      response = `Sending "${cleanedText}" to the chatbot.`;
     }
     
     setFeedback(response);
-  }, [navigate]);
+  }, [navigate, stopListening]);
 
   const startListening = useCallback(() => {
     if (isListening || !window.webkitSpeechRecognition) return;
 
     const recognition = new window.webkitSpeechRecognition();
-    recognition.continuous = false;
-    recognition.interimResults = false;
+    recognition.continuous = true;
+    recognition.interimResults = true;
     recognition.lang = 'en-US';
     
     recognition.onstart = () => setIsListening(true);
-    recognition.onend = () => setIsListening(false);
+    recognition.onend = () => {
+      // This is called when recognition ends, either by stop() or an error.
+      setIsListening(false);
+    };
     recognition.onerror = (event) => {
       console.error('Speech recognition error:', event.error);
+      if (event.error !== 'no-speech') {
+        setFeedback('An error occurred with voice recognition.');
+      }
       setIsListening(false);
     };
     
     recognition.onresult = (event) => {
-      const newTranscript = event.results[0][0].transcript;
-      setTranscript(newTranscript);
-      processCommand(newTranscript);
+      let finalTranscript = '';
+      let interimTranscript = '';
+
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) {
+          finalTranscript += event.results[i][0].transcript;
+        } else {
+          interimTranscript += event.results[i][0].transcript;
+        }
+      }
+
+      // Show interim results in the UI for better feedback
+      setTranscript(interimTranscript || finalTranscript);
+      
+      if (finalTranscript.trim()) {
+        processCommand(finalTranscript.trim());
+      }
     };
     
     recognition.start();
     recognitionRef.current = recognition;
   }, [isListening, processCommand]);
-
-  const stopListening = useCallback(() => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-    setIsListening(false);
-  }, []);
 
   useEffect(() => {
     if (feedback) {
@@ -344,7 +407,7 @@ const VoiceCommand = () => {
                 isListening ? 'bg-red-500 animate-pulse shadow-lg' : 'bg-gray-400'
               }`} />
               <span className="text-sm font-medium text-gray-700">
-                {isListening ? 'Listening...' : 'Ready to listen'}
+                {isListening ? 'Listening continuously...' : 'Ready to listen'}
               </span>
               {isListening && (
                 <motion.div
@@ -392,9 +455,9 @@ const VoiceCommand = () => {
             <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-100">
               <p className="text-xs font-semibold text-blue-800 mb-2 uppercase tracking-wide">Try saying:</p>
               <div className="space-y-1">
-                <p className="text-xs text-blue-700">🎯 "go to chatbot"</p>
+                <p className="text-xs text-blue-700">▶️ "play message"</p>
                 <p className="text-xs text-blue-700">🏥 "I have fever"</p>
-                <p className="text-xs text-blue-700">📤 "send message"</p>
+                <p className="text-xs text-blue-700">🛑 "stop listening"</p>
               </div>
             </div>
           </motion.div>
