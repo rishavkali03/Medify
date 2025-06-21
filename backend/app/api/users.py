@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends, Header, Query
+from fastapi import APIRouter, HTTPException, Depends, Header, Query, Request
 from pydantic import BaseModel
 from typing import List
 from pymongo import MongoClient
@@ -6,6 +6,7 @@ from bson import ObjectId
 import os
 from app.core.auth import hash_password, verify_password, create_access_token, decode_access_token
 from app.schemas.user import UserCreate
+from app.core.config import settings
 
 router = APIRouter()
 
