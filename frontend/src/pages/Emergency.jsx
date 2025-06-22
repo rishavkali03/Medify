@@ -6,7 +6,7 @@ import SearchFilters from '../components/SearchFilters';
 import VoiceCommand from '../components/VoiceCommand';
 import EmergencyIcon from '../components/EmergencyIcon';
 import EmergencyMap from '../components/EmergencyMap';
-const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+const BASE_URL = import.meta.env.VITE_BACKEND_URL_DEV;
 // Mock facility data with coordinates for major Indian cities
 const mockFacilities = [
   {
