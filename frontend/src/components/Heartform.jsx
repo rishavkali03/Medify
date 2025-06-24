@@ -1,6 +1,7 @@
 // HeartForm.jsx
 import { useState } from "react";
 import axios from "axios";
+import BASE_URL from '../config/api';
 
 export default function HeartForm() {
   const [form, setForm] = useState({
@@ -27,7 +28,7 @@ export default function HeartForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await axios.post("http://localhost:8000/api/predict/heart", form);
+    const res = await axios.post(`${BASE_URL}/api/predict/heart`, form);
     setPrediction(res.data.prediction);
     console.log(res.data.prediction);
   };

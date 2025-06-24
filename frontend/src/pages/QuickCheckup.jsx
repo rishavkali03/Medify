@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import BASE_URL from '../config/api';
 
 const QuickCheckup = () => {
   const navigate = useNavigate();
@@ -134,7 +135,7 @@ const QuickCheckup = () => {
       }
 
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:8000/api/predict/${diseaseType}`, {
+      const response = await fetch(`${BASE_URL}/api/predict/${diseaseType}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

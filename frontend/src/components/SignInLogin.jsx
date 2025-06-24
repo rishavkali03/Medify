@@ -8,6 +8,7 @@ import {
   EnvelopeIcon
 } from '@heroicons/react/24/solid';
 import logo from '../assets/logo_arogya.png';
+import BASE_URL from '../config/api';
 
 const SignInLogin = () => {
   const navigate = useNavigate();
@@ -64,7 +65,7 @@ const SignInLogin = () => {
             role: formData.role 
           };
 
-      const response = await fetch(`http://localhost:8000${endpoint}`, {
+      const response = await fetch(`${BASE_URL}${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

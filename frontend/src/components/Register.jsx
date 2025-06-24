@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import BASE_URL from '../config/api';
 
 const Register = ({ onAuthSuccess }) => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const Register = ({ onAuthSuccess }) => {
       return;
     }
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL_DEV}/api/users/register`, {
+      const response = await fetch(`${BASE_URL}/api/users/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
