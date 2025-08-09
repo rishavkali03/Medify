@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-const BASE_URL = import.meta.env.VITE_BACKEND_URL;
-export default function Login({ setIsAuthenticated }) {
+import BASE_URL from '../config/api';
+export default function Login({ setIsAuthenticated, onAuthSuccess }) {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -19,20 +19,22 @@ export default function Login({ setIsAuthenticated }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // TODO: Replace with actual API call
-      const response = await fetch(`${BASE_URL}/api/auth/login`, {
+      const response = await fetch(`${BASE_URL}/api/users/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          username: formData.email, // assuming username is email for login
+          password: formData.password
+        }),
       });
-
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('token', data.token);
-        setIsAuthenticated(true);
-        navigate('/dashboard');
+        localStorage.setItem('access_token', data.access_token);
+        if (onAuthSuccess) onAuthSuccess(data.access_token);
+        if (setIsAuthenticated) setIsAuthenticated(true);
+        navigate('/');
       } else {
         setError('Invalid email or password');
       }

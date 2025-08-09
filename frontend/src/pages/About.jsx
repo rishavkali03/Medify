@@ -33,7 +33,7 @@ const developers = [
     github: "https://github.com",
   },
   {
-    name: "Srijita Chakraborty",
+    name: "Koyel Das",
     desc: "Data cruncher and smart feature builder.",
     facebook: "https://facebook.com",
     instagram: "https://instagram.com",

@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 class HeartInput(BaseModel):
     age: float
@@ -25,3 +26,8 @@ class DiabetesInput(BaseModel):
     BMI: float
     DiabetesPedigreeFunction: float
     Age: int
+
+
+class SkinDiseaseInput(BaseModel):
+    # For image-based skin disease prediction
+    image: Optional[str] = None  # Base64 encoded image or file path

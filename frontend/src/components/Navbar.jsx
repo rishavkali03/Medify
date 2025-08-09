@@ -8,8 +8,10 @@ const Navbar = ({ setIsMobileMenuOpen }) => {
   const [showSignOutModal, setShowSignOutModal] = useState(false);
   const dropdownRef = useRef(null);
 
-  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-  const userName = localStorage.getItem('userName') || 'User';
+  // Only authenticated if both access_token and username are present
+  const accessToken = localStorage.getItem('access_token');
+  const userName = localStorage.getItem('username');
+  const isAuthenticated = !!accessToken && !!userName;
 
   const navigate = useNavigate();
 
@@ -25,6 +27,15 @@ const Navbar = ({ setIsMobileMenuOpen }) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  // Proper sign out: clear all auth data and redirect
+  const handleSignOut = () => {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('username');
+    setShowSignOutModal(false);
+    navigate('/signin');
+    window.location.reload(); // Ensure state is reset
+  };
 
   return (
     <>
@@ -88,7 +99,7 @@ const Navbar = ({ setIsMobileMenuOpen }) => {
                           My Appointments
                         </Link>
                         <button
-                          onClick={() => setShowSignOutModal(true)}
+                          onClick={handleSignOut}
                           className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 rounded-md"
                         >
                           Logout
@@ -118,7 +129,7 @@ const Navbar = ({ setIsMobileMenuOpen }) => {
               {isAuthenticated && (
                 <button
                   type="button"
-                  onClick={() => setShowSignOutModal(true)}
+                  onClick={handleSignOut}
                   className="bg-red-600 px-4 py-2 text-white text-sm rounded-md hover:bg-red-700 transition hover:scale-105 shadow-md"
                 >
                   Sign Out

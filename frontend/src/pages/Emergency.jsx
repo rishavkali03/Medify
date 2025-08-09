@@ -6,7 +6,7 @@ import SearchFilters from '../components/SearchFilters';
 import VoiceCommand from '../components/VoiceCommand';
 import EmergencyIcon from '../components/EmergencyIcon';
 import EmergencyMap from '../components/EmergencyMap';
-const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+import BASE_URL from '../config/api';
 // Mock facility data with coordinates for major Indian cities
 const mockFacilities = [
   {
@@ -83,6 +83,9 @@ const Emergency = () => {
   const [facilities, setFacilities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [contacts, setContacts] = useState([]);
+  const [newContact, setNewContact] = useState({ name: '', number: '' });
+  const [editIndex, setEditIndex] = useState(null);
 
   const toggleMap = () => setShowMap((prev) => !prev);
 
@@ -118,6 +121,41 @@ const Emergency = () => {
 
     fetchFacilities();
   }, []);
+
+  useEffect(() => {
+    // Load contacts from localStorage
+    const saved = localStorage.getItem('emergency_contacts');
+    if (saved) setContacts(JSON.parse(saved));
+  }, []);
+
+  useEffect(() => {
+    // Save contacts to localStorage
+    localStorage.setItem('emergency_contacts', JSON.stringify(contacts));
+  }, [contacts]);
+
+  const handleAddContact = (e) => {
+    e.preventDefault();
+    if (!newContact.name || !newContact.number) return;
+    setContacts([...contacts, newContact]);
+    setNewContact({ name: '', number: '' });
+  };
+
+  const handleDeleteContact = (idx) => {
+    setContacts(contacts.filter((_, i) => i !== idx));
+  };
+
+  const handleEditContact = (idx) => {
+    setEditIndex(idx);
+    setNewContact(contacts[idx]);
+  };
+
+  const handleUpdateContact = (e) => {
+    e.preventDefault();
+    if (!newContact.name || !newContact.number) return;
+    setContacts(contacts.map((c, i) => (i === editIndex ? newContact : c)));
+    setEditIndex(null);
+    setNewContact({ name: '', number: '' });
+  };
 
   const filteredFacilities = facilities.filter(facility => {
     if (selectedStatus === 'all') return true;
@@ -239,6 +277,47 @@ const Emergency = () => {
             <EmergencyMap facilities={filteredFacilities} />
           </div>
         )}
+
+        {/* Emergency Contacts Section */}
+        <div className="max-w-2xl mx-auto mt-8 mb-8 bg-white rounded-xl shadow-lg p-6">
+          <h2 className="text-2xl font-bold text-red-600 mb-4">Your Emergency Contacts</h2>
+          <form onSubmit={editIndex === null ? handleAddContact : handleUpdateContact} className="flex flex-col md:flex-row gap-2 mb-4">
+            <input
+              type="text"
+              placeholder="Name"
+              value={newContact.name}
+              onChange={e => setNewContact({ ...newContact, name: e.target.value })}
+              className="border rounded-md px-3 py-2 flex-1"
+            />
+            <input
+              type="tel"
+              placeholder="Phone Number"
+              value={newContact.number}
+              onChange={e => setNewContact({ ...newContact, number: e.target.value })}
+              className="border rounded-md px-3 py-2 flex-1"
+            />
+            <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-md">
+              {editIndex === null ? 'Add' : 'Update'}
+            </button>
+            {editIndex !== null && (
+              <button type="button" onClick={() => { setEditIndex(null); setNewContact({ name: '', number: '' }); }} className="bg-gray-400 text-white px-4 py-2 rounded-md">Cancel</button>
+            )}
+          </form>
+          <ul>
+            {contacts.length === 0 && <li className="text-gray-500">No contacts added yet.</li>}
+            {contacts.map((contact, idx) => (
+              <li key={idx} className="flex items-center justify-between py-2 border-b">
+                <span className="font-semibold">{contact.name}:</span>
+                <span className="ml-2">{contact.number}</span>
+                <div className="flex gap-2 ml-4">
+                  <a href={`tel:${contact.number}`} className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">Call</a>
+                  <button onClick={() => handleEditContact(idx)} className="bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500">Edit</button>
+                  <button onClick={() => handleDeleteContact(idx)} className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
       {/* Floating Map Toggle Button */}

@@ -10,7 +10,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const API_URL = import.meta.env.VITE_BACKEND_URL;
+const API_URL = import.meta.env.VITE_BACKEND_URL_DEV;
 
 const Chatbot = () => {
   const [inputMessage, setInputMessage] = useState('');
@@ -22,12 +22,13 @@ const Chatbot = () => {
   const [recordingTime, setRecordingTime] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [voiceFeedback, setVoiceFeedback] = useState('');
 
   const mediaRecorderRef = useRef(null);
   const chunksRef = useRef([]);
   const audioRef = useRef(null);
   const intervalRef = useRef(null);
-  const scrollContainerRef = useRef(null); // NEW: scroll target
+  const scrollContainerRef = useRef(null);
 
   useEffect(() => {
     const greeting = {
@@ -37,6 +38,65 @@ const Chatbot = () => {
     };
     setMessages([greeting]);
   }, []);
+
+  // Listen for voice commands from the global VoiceCommand component
+  useEffect(() => {
+    const handleVoiceCommand = (event) => {
+      const { action, text } = event.detail;
+
+      if (action === 'clear_chat') {
+        setMessages([{
+          sender: 'bot',
+          text: "👋 Hi there! I'm your health assistant. Ask me anything—from symptoms to wellness tips!",
+          timestamp: new Date(),
+        }]);
+        setVoiceFeedback('Chat cleared via voice command!');
+        setTimeout(() => setVoiceFeedback(''), 3000);
+        return;
+      }
+
+      if (text) {
+        setInputMessage(text);
+        setTimeout(() => {
+          const form = document.getElementById('chatbot-form');
+          if (form) {
+            form.requestSubmit();
+          }
+        }, 100);
+      }
+    };
+
+    window.addEventListener('voice-command-chat', handleVoiceCommand);
+
+    return () => {
+      window.removeEventListener('voice-command-chat', handleVoiceCommand);
+    };
+  }, []); // Empty dependency array ensures this runs only once
+
+  useEffect(() => {
+    const handleVoiceAudioCommand = (event) => {
+      const { action } = event.detail;
+      if (action === 'play_last_message') {
+        const lastBotMessageWithAudio = [...messages]
+          .reverse()
+          .find(msg => msg.sender === 'bot' && msg.audio && msg.audio.url);
+
+        if (lastBotMessageWithAudio) {
+          playAudio(lastBotMessageWithAudio.audio.url);
+          setVoiceFeedback('Playing the last audio message.');
+        } else {
+          setVoiceFeedback('No audio message found to play.');
+        }
+        setTimeout(() => setVoiceFeedback(''), 3000);
+      }
+    };
+
+    window.addEventListener('voice-command-audio', handleVoiceAudioCommand);
+
+    return () => {
+      window.removeEventListener('voice-command-audio', handleVoiceAudioCommand);
+    };
+  }, [messages]); // Dependency on messages is important here
 
   useEffect(() => {
     if (scrollContainerRef.current) {
@@ -190,6 +250,18 @@ const Chatbot = () => {
           <div className="bg-white border-b border-gray-200 p-4 text-center">
             <h1 className="text-2xl font-bold text-blue-600">🧠Care Bot</h1>
             <p className="text-sm text-gray-500">Ask anything about your health & wellness</p>
+            
+            {/* Voice Feedback */}
+            {voiceFeedback && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="mt-2 p-2 bg-green-100 text-green-700 rounded-lg text-xs"
+              >
+                🎤 {voiceFeedback}
+              </motion.div>
+            )}
           </div>
 
           {/* Chat messages */}
@@ -254,7 +326,7 @@ const Chatbot = () => {
 
           {/* Input Section */}
           <div className="border-t border-gray-200 p-4 bg-white">
-            <form onSubmit={handleSendMessage} className="flex items-center gap-2">
+            <form id="chatbot-form" onSubmit={handleSendMessage} className="flex items-center gap-2">
               <div className="flex-1 flex items-center gap-2 bg-gray-100 rounded-full px-4 py-2 shadow-inner">
                 <input
                   type="text"

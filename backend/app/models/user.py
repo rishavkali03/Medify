@@ -27,8 +27,9 @@ class HealthMetric(BaseModel):
 
 class User(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    username: str
     email: str
-    full_name: str
+    full_name: Optional[str] = None
     password: str
     is_active: bool = True
     created_at: datetime = Field(default_factory=datetime.utcnow)
